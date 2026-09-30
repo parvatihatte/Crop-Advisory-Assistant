@@ -1,0 +1,559 @@
+MEGA PROMPT: AI-POWERED AGRICULTURE CROP ADVISORY ASSISTANT
+1. HEADER & SYSTEM PERSONA ROLE
+You are acting as an Elite Principal Full-Stack Engineer, Chief AI Architect, and Domain Expert in Precision Agriculture Software. You possess deep technical expertise in building resilient web applications using React.js, Node.js + Express.js, Replit Postgres (PostgreSQL with pg / Drizzle ORM), @google/genai SDK, Zod, and Tailwind CSS.
+Your directive is to construct a production-ready, fully functional, multi-tenant AI-Powered Agriculture Crop Advisory Assistant. Every component, schema, route, system prompt, validation layer, and utility must be completely implemented. Do NOT use placeholders (// TODO), incomplete loops, mock stubs, or truncated code. All TypeScript types, backend logic, data validation schemas, database models, and user interfaces must be fully flushed out.
+2. CORE MISSION DIRECTIVE
+Build an end-to-end digital agronomy advisory platform that transforms raw agricultural inputs (soil parameters, regional climate data, crop growth stage, image uploads of stressed crops, historical field yields, and budget constraints) into actionable, hyper-localized crop advisory plans.
+The system must handle data input via structured forms and image diagnostic uploads, validate all payloads strictly using Zod, process requests asynchronously through a Node.js/Express backend, execute multi-modal inference via the @google/genai SDK (Gemini 2.5 Flash) with structured JSON output schemas, and persist all profiles, advisories, field records, and diagnostic histories securely in Replit Postgres with multi-tenant row isolation.
+3. PRODUCT GOAL
+To bridge the gap between complex agronomic science and daily farm management by delivering an intelligent, real-time decision-support system. The platform allows farmers, agronomists, and farm managers to:
+Register farm profiles, field boundaries, and soil test records.
+Submit structured crop advisory requests (crop selection, fertilizer schedules, irrigation planning, pest/disease diagnosis).
+Upload crop leaf/stem images for automated multimodal visual disease detection.
+Receive deterministic, agronomy-backed recommendations with actionable step-by-step instructions (e.g., precise NPK application rates, irrigation frequency, organic/chemical treatment options).
+Track historical advisories, field performance, and historical yield records over time.
+4. MANDATORY FEATURES
+Core Application Capabilities
+Interactive Farm & Field Management Hub: Comprehensive CRUD for managing farms, field plots, soil types (pH, NPK levels, organic matter percentage), irrigation access, and regional climate classifications.
+Structured Crop Planning & Advisory Engine: Input fields for target crop, planting date, field size (hectares/acres), budgetary constraints, and current crop growth stage.
+Multimodal Visual Disease & Pest Diagnostics: Image analysis endpoint capable of processing leaf/crop uploads alongside field context to identify diseases, nutrient deficiencies, or pest infestations with confidence scores and immediate remediation plans.
+Dynamic Advisory Generation: AI-driven generation of customized agronomic plans covering:
+Nutrient Management (NPK dosing & timing)
+Smart Irrigation Scheduling (based on soil moisture retention & growth phase)
+Integrated Pest Management (IPM - mechanical, biological, and chemical controls)
+Yield Optimization & Risk Mitigation Strategies
+Historical Advisory Ledger & Analytics: Ability to view, filter, compare, export (PDF/JSON format), and audit all past advisory reports generated for specific fields.
+Multi-Language Advisory Support: AI-generated output translated dynamically into target regional languages (e.g., English, Spanish, Hindi, French, Swahili) while preserving technical precision.
+Offline-First Data Staging & Resiliency: Optimistic UI state handling with client-side caching using React Query / SWR patterns for low-bandwidth rural connectivity.
+5. TECHNOLOGY REQUIREMENTS
+Frontend Stack
+Framework: React.js (v18+) with Vite, TypeScript (.tsx)
+Styling: Tailwind CSS + shadcn/ui UI primitives + lucide-react icons
+State Management & Data Fetching: @tanstack/react-query (v5)
+Form Handling: react-hook-form with @hookform/resolvers/zod
+Routing: wouter or react-router-dom (v6+)
+Backend Stack
+Runtime: Node.js (v20+) with TypeScript (tsx / ts-node)
+Web Framework: Express.js (express)
+Database: Replit Postgres / PostgreSQL (@neondatabase/serverless or standard pg driver)
+ORM Query Builder: drizzle-orm + drizzle-kit
+AI Engine Integration: @google/genai (Google Gen AI SDK v0.1.1+) using model gemini-2.5-flash
+Validation & Parsing: zod
+Security & Auth: Express Session / Bearer Token pattern + argon2 or bcryptjs password hashing, helmet, cors, express-rate-limit
+6. APPLICATION PAGES (ROUTES)
+Route Path	Page Component Name	Primary Function / View Scope
+/	LandingPage.tsx	Overview, feature highlights, user entry point, and system metrics dashboard.
+/auth/login	LoginPage.tsx	Secure authentication portal for farmers and agronomists.
+/auth/register	RegisterPage.tsx	User onboarding with role selection (farmer, agronomist, farm_manager).
+/dashboard	DashboardPage.tsx	Central control tower displaying active fields, recent advisories, weather summary, and quick action cards.
+/farms	FarmsOverviewPage.tsx	List and grid view of registered farm properties and field plots.
+/farms/new	CreateFarmPage.tsx	Form wizard to register a farm and map initial field soil profiles.
+/farms/:farmId/fields	FieldDetailsPage.tsx	Detailed view of a single field (soil pH, moisture retention, crop history).
+/advisory/new	CreateAdvisoryPage.tsx	Form wizard for generating new advisory reports (Crop Planning, Soil Health, Diagnostics).
+/advisory/diagnose	VisualDiagnosisPage.tsx	Multimodal upload interface for leaf/crop diagnostic image inspection.
+/advisory/history	AdvisoryHistoryPage.tsx	Searchable, filterable table listing all generated advisories with export actions.
+/advisory/:advisoryId	AdvisoryDetailViewPage.tsx	Comprehensive read-only advisory report dashboard with print/export options.
+/settings	SettingsPage.tsx	User profile, language preference, measurement system toggles, and API integrations.
+7. USER FLOW & TARGET DOMAINS
+[ User Onboarding / Auth ]
+          │
+          ▼
+[ Farm & Field Profile Configuration ] ──(Soil pH, NPK, Location, Irrigation)
+          │
+          ├─────────────────────────────────────────┐
+          ▼                                         ▼
+[ Structured Advisory Request ]          [ Image Diagnostic Request ]
+  (Crop choice, Growth phase, Budget)       (Leaf photo upload + Symptoms)
+          │                                         │
+          └────────────────────┬────────────────────┘
+                               ▼
+            [ Express API Payload Validation (Zod) ]
+                               │
+                               ▼
+            [ Gemini 2.5 Flash GenAI Processing ]
+                               │
+                               ▼
+            [ Structured JSON Schema Output Validation ]
+                               │
+                               ▼
+            [ PostgreSQL Persistence (RLS / Tenant Isolation) ]
+                               │
+                               ▼
+            [ Interactive Advisory Report Render Page ]
+Domain Categorization
+Target Users: Smallholder farmers, industrial farm managers, commercial agronomists, agricultural extension workers.
+Crop Types Supported: Cereals & Grains, Pulses/Legumes, Cash Crops, Fruits & Vegetables, Oilseeds, Tuber Crops.
+Climatic Zones: Arid, Semi-Arid, Tropical, Sub-Tropical, Temperate, Mediterranean.
+8. FORM & ADVISORY CONFIGURATION
+Input Dimensions & Field Specifications
+Farm Profile Metadata: Name, Geo-coordinates (Lat/Long), Altitude, Total Area (hectares).
+Soil Physical & Chemical Parameters:
+Texture: Sandy, Loamy, Clay, Silt, Peat, Chalky.
+Soil pH: Float range (3.0 to 10.0).
+Nitrogen (N): mg/kg or Low / Medium / High.
+Phosphorus (P): mg/kg or Low / Medium / High.
+Potassium (K): mg/kg or Low / Medium / High.
+Organic Matter (%): Float range (0.1% to 15.0%).
+Agronomic Context:
+Crop Name: Text string (e.g., Maize, Tomato, Wheat, Rice).
+Growth Phase: Germination, Vegetative, Flowering, Fruiting, Maturation, Harvest.
+Water Source: Rainfed, Drip Irrigation, Overhead Sprinkler, Flood Irrigation, Sub-irrigation.
+Observed Symptoms: Text description of stress, pest damage, discoloration, or stunting.
+Diagnostic Image: Optional Base64/Buffer or image URL.
+Target Language: English, Spanish, French, Hindi, Swahili.
+9. DATABASE SCHEMA (PRODUCTION SQL FOR POSTGRESQL)
+Execute this DDL schema script using Drizzle ORM or native SQL execution:
+SQL
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- USER ACCOUNTS
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'farmer' CHECK (role IN ('farmer', 'agronomist', 'admin')),
+    preferred_language VARCHAR(10) NOT NULL DEFAULT 'en',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- FARMS
+CREATE TABLE IF NOT EXISTS farms (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(150) NOT NULL,
+    location_name VARCHAR(255) NOT NULL,
+    latitude NUMERIC(10, 8),
+    longitude NUMERIC(11, 8),
+    climate_zone VARCHAR(50) NOT NULL,
+    total_area_hectares NUMERIC(8, 2) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- FIELDS / PLOTS
+CREATE TABLE IF NOT EXISTS fields (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    farm_id UUID NOT NULL REFERENCES farms(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    area_hectares NUMERIC(8, 2) NOT NULL,
+    soil_type VARCHAR(50) NOT NULL,
+    soil_ph NUMERIC(3, 1) CHECK (soil_ph BETWEEN 3.0 AND 10.0),
+    nitrogen_level VARCHAR(20) DEFAULT 'Medium',
+    phosphorus_level VARCHAR(20) DEFAULT 'Medium',
+    potassium_level VARCHAR(20) DEFAULT 'Medium',
+    organic_matter_pct NUMERIC(4, 2),
+    irrigation_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CROP ADVISORIES
+CREATE TABLE IF NOT EXISTS advisories (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    field_id UUID NOT NULL REFERENCES fields(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    advisory_type VARCHAR(50) NOT NULL CHECK (advisory_type IN ('CROP_PLANNING', 'SOIL_HEALTH', 'DISEASE_DIAGNOSIS', 'IRRIGATION')),
+    target_crop VARCHAR(100) NOT NULL,
+    growth_stage VARCHAR(50) NOT NULL,
+    symptoms_description TEXT,
+    image_url TEXT,
+    
+    -- Structured AI Output Stored as JSONB
+    ai_raw_response JSONB NOT NULL,
+    summary_title VARCHAR(255) NOT NULL,
+    health_status VARCHAR(50) NOT NULL, -- e.g., Healthy, At Risk, Severe Issues
+    confidence_score NUMERIC(3, 2),     -- 0.00 to 1.00
+    
+    language_code VARCHAR(10) NOT NULL DEFAULT 'en',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- INDEXES FOR FAST MULTI-TENANT QUERYING
+CREATE INDEX IF NOT EXISTS idx_farms_user_id ON farms(user_id);
+CREATE INDEX IF NOT EXISTS idx_fields_farm_id ON fields(farm_id);
+CREATE INDEX IF NOT EXISTS idx_advisories_field_id ON advisories(field_id);
+CREATE INDEX IF NOT EXISTS idx_advisories_user_id ON advisories(user_id);
+10. ROW LEVEL SECURITY (RLS) & DATA ISOLATION RULES
+Strict User Tenant Scoping: Every user query on farms, fields, and advisories must join or filter explicitly against the authenticated user's ID (WHERE user_id = req.user.id).
+Cascading Field Validation: When creating or fetching a field or advisory, verify that the associated farm_id belongs to the requesting user before performing the transaction.
+Data Sanitization: Sanitize all textual user inputs using xss or backend escape utilities prior to storing or supplying context to the LLM.
+11. BACKEND API ROUTES
+HTTP Method	Route Endpoint	Payload (Zod Schema)	Functionality
+POST	/api/auth/register	registerUserSchema	Registers a new user, hashes password, returns JWT/Session.
+POST	/api/auth/login	loginUserSchema	Authenticates user, returns JWT or sets HTTP-only cookie.
+GET	/api/farms	None	Returns all farms owned by the authenticated user.
+POST	/api/farms	createFarmSchema	Creates a new farm profile for the current tenant.
+GET	/api/farms/:farmId/fields	None	Retrieves all fields under a specific farm owned by the user.
+POST	/api/fields	createFieldSchema	Creates a field record tied to a farm.
+POST	/api/advisories/generate	generateAdvisorySchema	Accepts field params, sends request to Gemini 2.5 Flash, stores JSON response, and returns result.
+POST	/api/advisories/diagnose-image	diagnoseImageSchema	Accepts image Base64 + field context, runs multimodal AI inference, saves and returns report.
+GET	/api/advisories	Query: ?fieldId=&type=	Lists advisories for the tenant with optional filtering.
+GET	/api/advisories/:id	None	Fetches single advisory detail record by ID.
+12. GEMINI SDK SETUP & SERVER-SIDE SECURITY
+Implement the official @google/genai SDK v0.1.1+ as shown in the code below. Ensure the GEMINI_API_KEY is loaded strictly from process.env on the backend server. Never leak the API key to the client bundle.
+TypeScript
+// server/services/geminiClient.ts
+import { GoogleGenAI } from '@google/genai';
+
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("CRITICAL ERROR: GEMINI_API_KEY environment variable is not set.");
+}
+
+export const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
+
+export const GEMINI_MODEL_FLASH = 'gemini-2.5-flash';
+13. AI SYSTEM PROMPT
+The following system instruction must be passed during all generative model interactions:
+Plaintext
+You are Agromaniac AI, a World-Class Principal Agronomist, Plant Pathologist, and Soil Health Specialist with decades of field experience. Your mission is to deliver hyper-localized, highly scientific, yet practically actionable crop advisory guidance to farmers and agricultural specialists.
+
+OPERATIONAL RULES:
+1. Always base recommendations on scientific agronomic principles, prioritizing Soil pH, NPK requirements, growth stage sensitivities, and regional climatic factors.
+2. Provide precise, actionable steps. Avoid vague generalities like "apply enough fertilizer." Instead, specify exact types, ratios, or application methodologies (e.g., "Apply 50 kg/ha of Urea split into two doses during early vegetative and pre-flowering stages").
+3. Prioritize Integrated Pest Management (IPM), balancing cultural, biological, and target-specific organic/chemical controls.
+4. Output MUST adhere STRICTLY to the requested JSON Schema. Do not wrap output in markdown fences, do not prepend commentary or trailing text outside the JSON structure.
+5. Provide localized recommendations aligned with the requested language code while keeping technical product names or standard agricultural metrics explicit and unambiguous.
+14. DETAILED AI PROMPTS & JSON SCHEMAS
+A. General Crop Advisory Prompt & Schema
+Backend Execution Code:
+TypeScript
+// server/services/advisoryService.ts
+import { ai, GEMINI_MODEL_FLASH } from './geminiClient';
+import { Type, Schema } from '@google/genai';
+
+export const cropAdvisorySchema: Schema = {
+  type: Type.OBJECT,
+  properties: {
+    summary_title: { type: Type.STRING, description: "Actionable summary title of the advisory" },
+    health_status: { type: Type.STRING, description: "Overall assessment: Optimal, Warning, Critical, or Deficient" },
+    confidence_score: { type: Type.NUMBER, description: "Confidence score between 0.00 and 1.00" },
+    key_findings: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "List of core diagnostic observations"
+    },
+    soil_health_analysis: {
+      type: Type.OBJECT,
+      properties: {
+        status: { type: Type.STRING },
+        recommendations: { type: Type.ARRAY, items: { type: Type.STRING } }
+      },
+      required: ["status", "recommendations"]
+    },
+    fertilizer_schedule: {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          timing: { type: Type.STRING, description: "e.g., At Planting, 14 Days Post-Emergence" },
+          product_or_type: { type: Type.STRING, description: "e.g., NPK 15-15-15, Urea" },
+          application_rate: { type: Type.STRING, description: "e.g., 100 kg/ha" },
+          method: { type: Type.STRING, description: "Foliar spray, Soil incorporation, Side-dressing" }
+        },
+        required: ["timing", "product_or_type", "application_rate", "method"]
+      }
+    },
+    irrigation_plan: {
+      type: Type.OBJECT,
+      properties: {
+        frequency: { type: Type.STRING },
+        water_volume_recommendation: { type: Type.STRING },
+        critical_precautions: { type: Type.ARRAY, items: { type: Type.STRING } }
+      },
+      required: ["frequency", "water_volume_recommendation", "critical_precautions"]
+    },
+    preventative_measures: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING }
+    }
+  },
+  required: [
+    "summary_title",
+    "health_status",
+    "confidence_score",
+    "key_findings",
+    "soil_health_analysis",
+    "fertilizer_schedule",
+    "irrigation_plan",
+    "preventative_measures"
+  ]
+};
+
+export async function generateCropAdvisory(payload: any) {
+  const prompt = `
+Generate a comprehensive agricultural advisory based on the following field parameters:
+- Target Crop: ${payload.targetCrop}
+- Growth Stage: ${payload.growthStage}
+- Soil Type: ${payload.soilType}
+- Soil pH: ${payload.soilPh}
+- Soil N-P-K Status: N=${payload.nitrogenLevel}, P=${payload.phosphorusLevel}, K=${payload.potassiumLevel}
+- Irrigation Source: ${payload.irrigationType}
+- Special Observed Symptoms/Notes: ${payload.symptomsDescription || "None reported"}
+- Output Target Language Code: ${payload.languageCode || 'en'}
+
+Return ONLY a JSON response following the exact schema provided.
+`;
+
+  const response = await ai.models.generateContent({
+    model: GEMINI_MODEL_FLASH,
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: cropAdvisorySchema,
+      temperature: 0.2,
+    }
+  });
+
+  return JSON.parse(response.text!);
+}
+B. Multimodal Visual Disease Diagnostic Prompt & Schema
+Backend Execution Code:
+TypeScript
+// server/services/diagnosticService.ts
+import { ai, GEMINI_MODEL_FLASH } from './geminiClient';
+import { Type, Schema } from '@google/genai';
+
+export const visualDiagnosticSchema: Schema = {
+  type: Type.OBJECT,
+  properties: {
+    summary_title: { type: Type.STRING },
+    health_status: { type: Type.STRING, description: "Healthy, Pest Infested, Disease Detected, Nutrient Deficient" },
+    confidence_score: { type: Type.NUMBER },
+    detected_issue: {
+      type: Type.OBJECT,
+      properties: {
+        common_name: { type: Type.STRING },
+        scientific_name: { type: Type.STRING },
+        severity: { type: Type.STRING, description: "Low, Moderate, High, Severe" },
+        primary_cause: { type: Type.STRING, description: "Fungal, Bacterial, Viral, Insect, Deficiency" }
+      },
+      required: ["common_name", "scientific_name", "severity", "primary_cause"]
+    },
+    symptoms_identified: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING }
+    },
+    treatment_protocol: {
+      type: Type.OBJECT,
+      properties: {
+        immediate_action: { type: Type.STRING },
+        organic_controls: { type: Type.ARRAY, items: { type: Type.STRING } },
+        chemical_controls: { type: Type.ARRAY, items: { type: Type.STRING } }
+      },
+      required: ["immediate_action", "organic_controls", "chemical_controls"]
+    },
+    preventative_guidance: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING }
+    }
+  },
+  required: [
+    "summary_title",
+    "health_status",
+    "confidence_score",
+    "detected_issue",
+    "symptoms_identified",
+    "treatment_protocol",
+    "preventative_guidance"
+  ]
+};
+
+export async function diagnoseCropImage(imageBase64: string, mimeType: string, context: any) {
+  const prompt = `
+Analyze this crop/plant leaf image for signs of disease, pest infestation, or nutrient stress.
+Field Context:
+- Crop Type: ${context.targetCrop}
+- Growth Stage: ${context.growthStage}
+- Observed Field Symptoms: ${context.symptomsDescription || "N/A"}
+- Language: ${context.languageCode || "en"}
+
+Identify any disease or condition with precision, provide immediate remediation, organic treatments, chemical controls (if appropriate), and preventative steps.
+`;
+
+  const imagePart = {
+    inlineData: {
+      data: imageBase64,
+      mimeType: mimeType
+    }
+  };
+
+  const response = await ai.models.generateContent({
+    model: GEMINI_MODEL_FLASH,
+    contents: [prompt, imagePart],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: visualDiagnosticSchema,
+      temperature: 0.1,
+    }
+  });
+
+  return JSON.parse(response.text!);
+}
+15. ZOD VALIDATION REQUIREMENTS
+All incoming HTTP request bodies must be validated using Express middleware before reaching controllers or database handlers.
+TypeScript
+// shared/schemas.ts
+import { z } from 'zod';
+
+export const registerUserSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  fullName: z.string().min(2, "Full name required"),
+  role: z.enum(['farmer', 'agronomist', 'admin']).default('farmer'),
+  preferredLanguage: z.string().default('en')
+});
+
+export const createFarmSchema = z.object({
+  name: z.string().min(2, "Farm name required"),
+  locationName: z.string().min(2, "Location name required"),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+  climateZone: z.string().min(2, "Climate zone required"),
+  totalAreaHectares: z.number().positive("Area must be greater than zero")
+});
+
+export const createFieldSchema = z.object({
+  farmId: z.string().uuid("Valid Farm ID required"),
+  name: z.string().min(1, "Field name required"),
+  areaHectares: z.number().positive("Area must be positive"),
+  soilType: z.string().min(2, "Soil type required"),
+  soilPh: z.number().min(3.0).max(10.0).optional(),
+  nitrogenLevel: z.enum(['Low', 'Medium', 'High']).default('Medium'),
+  phosphorusLevel: z.enum(['Low', 'Medium', 'High']).default('Medium'),
+  potassiumLevel: z.enum(['Low', 'Medium', 'High']).default('Medium'),
+  organicMatterPct: z.number().min(0).max(100).optional(),
+  irrigationType: z.string().min(2, "Irrigation type required")
+});
+
+export const generateAdvisorySchema = z.object({
+  fieldId: z.string().uuid("Valid Field ID required"),
+  advisoryType: z.enum(['CROP_PLANNING', 'SOIL_HEALTH', 'DISEASE_DIAGNOSIS', 'IRRIGATION']),
+  targetCrop: z.string().min(2, "Target crop name required"),
+  growthStage: z.string().min(2, "Growth stage required"),
+  symptomsDescription: z.string().optional(),
+  languageCode: z.string().default('en')
+});
+
+export const diagnoseImageSchema = z.object({
+  fieldId: z.string().uuid("Valid Field ID required"),
+  targetCrop: z.string().min(2, "Target crop required"),
+  growthStage: z.string().min(2, "Growth stage required"),
+  symptomsDescription: z.string().optional(),
+  imageBase64: z.string().min(10, "Base64 image payload required"),
+  mimeType: z.enum(['image/jpeg', 'image/png', 'image/webp']),
+  languageCode: z.string().default('en')
+});
+16. FRONTEND COMPONENTS LIST
+Navbar.tsx & Sidebar.tsx: Primary navigation layout containing farm switchers, quick diagnostic triggers, and language selection dropdowns.
+FarmCard.tsx & FieldCard.tsx: UI cards rendering farm acreage, field count, soil health badges, and diagnostic status.
+AdvisoryWizardForm.tsx: Multi-step wizard form utilizing react-hook-form and zod for creating targeted advisory requests.
+ImageUploader.tsx: Drag-and-drop file uploader component with image preview, file size validation, and Base64 conversion logic.
+AdvisoryReportViewer.tsx: Detailed presentation component rendering structured AI advisory output with color-coded severity cards, expandable timeline cards for fertilizer schedules, and IPM checklists.
+HealthStatusBadge.tsx: Visual status indicators (Optimal -> Green, Warning -> Amber, Critical -> Red).
+FertilizerTimeline.tsx: Vertical visual timeline component detailing timing, rate, and application technique for field inputs.
+ExportReportButton.tsx: Trigger button to print or download advisory results as a formatted PDF/JSON file.
+17. SECURITY REQUIREMENTS
+Environment Variable Safeguards: GEMINI_API_KEY and DATABASE_URL must NEVER be exposed to the client-side JavaScript bundle.
+HTTP Hardening: Configure helmet for header security, enable cors with explicit origin whitelisting, and implement express-rate-limit on advisory routes (e.g., maximum 10 advisory generations per minute per user).
+Payload Size Limits: Express JSON payload parser must be capped (express.json({ limit: '10mb' })) to accommodate Base64 diagnostic image uploads safely without memory overflow.
+18. ENVIRONMENT VARIABLES TEMPLATE
+Create a .env file in the project root:
+Code snippet
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database Connection (Replit Postgres / PostgreSQL)
+DATABASE_URL=postgresql://user:password@localhost:5432/crop_advisory_db
+
+# Security & Authentication
+SESSION_SECRET=super_secret_session_key_change_in_production_32chars
+JWT_SECRET=super_secret_jwt_key_for_authentication_tokens
+
+# AI Engine Security
+GEMINI_API_KEY=AIzaSyYourActualGeminiApiKeyHere
+19. SUGGESTED FOLDER STRUCTURE
+Plaintext
+crop-advisory-assistant/
+├── client/
+│   ├── index.html
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── advisoryApi.ts
+│   │   │   ├── farmApi.ts
+│   │   │   └── client.ts
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   ├── Navbar.tsx
+│   │   │   │   └── Sidebar.tsx
+│   │   │   ├── advisory/
+│   │   │   │   ├── AdvisoryReportViewer.tsx
+│   │   │   │   ├── AdvisoryWizardForm.tsx
+│   │   │   │   ├── FertilizerTimeline.tsx
+│   │   │   │   └── ImageUploader.tsx
+│   │   │   └── ui/
+│   │   │       ├── HealthStatusBadge.tsx
+│   │   │       └── ExportReportButton.tsx
+│   │   ├── pages/
+│   │   │   ├── AdvisoryDetailViewPage.tsx
+│   │   │   ├── AdvisoryHistoryPage.tsx
+│   │   │   ├── CreateAdvisoryPage.tsx
+│   │   │   ├── DashboardPage.tsx
+│   │   │   ├── FarmsOverviewPage.tsx
+│   │   │   └── VisualDiagnosisPage.tsx
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── index.css
+├── server/
+│   ├── db/
+│   │   ├── db.ts
+│   │   └── schema.ts
+│   ├── middleware/
+│   │   ├── authMiddleware.ts
+│   │   └── validateMiddleware.ts
+│   ├── services/
+│   │   ├── advisoryService.ts
+│   │   ├── diagnosticService.ts
+│   │   └── geminiClient.ts
+│   ├── routes.ts
+│   └── index.ts
+├── shared/
+│   └── schemas.ts
+├── drizzle.config.ts
+├── package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── .env
+20. IMPLEMENTATION PHASES
+Phase 1: Database & Core Server Setup
+Initialize project structure with TypeScript, Express, and Drizzle ORM.
+Setup PostgreSQL database connection and run schema migrations for users, farms, fields, and advisories.
+Implement user authentication middleware and basic password hashing.
+Phase 2: Gemini SDK Integration & Advisory Engine
+Configure @google/genai SDK v0.1.1+ with server-side GEMINI_API_KEY.
+Implement structured JSON schema generation for crop planning, irrigation, and soil health.
+Build the multimodal image diagnostic service supporting Base64 leaf analysis.
+Wire up Express API endpoints with Zod payload validation middleware.
+Phase 3: Frontend Interface Development
+Build React application structure using Tailwind CSS and shadcn/ui components.
+Implement Farm & Field management views with interactive input forms.
+Build the Advisory Wizard and Image Upload components using react-hook-form and @tanstack/react-query.
+Create the comprehensive AdvisoryReportViewer component with status badges, treatment checklists, and fertilizer schedules.
+Phase 4: Security, Persistence & End-to-End Testing
+Enforce user tenant isolation across all backend routes.
+Apply rate-limiting, CORS, and security header middlewares.
+Execute end-to-end user testing: Farm Creation -> Advisory Request -> Multimodal Image Diagnostic -> Persistence -> History View -> PDF Export.
+21. ACCEPTANCE CRITERIA
+[ ] Fully Functional Multimodal AI: Image upload endpoint accepts crop leaf photos and returns structured diagnostic JSON responses using gemini-2.5-flash via @google/genai SDK without falling back to unstructured text.
+[ ] Strict Output Validation: All AI output complies with defined JSON schemas without syntax errors or missing required keys.
+[ ] Complete CRUD & Tenant Isolation: Users can create farms, fields, and advisories. Queries strictly isolate data to the logged-in user.
+[ ] Zod Input Guardrails: Every backend endpoint validates incoming request bodies and returns structured HTTP 400 errors for invalid parameters.
+[ ] No Placeholders: All codebase files are fully written out with complete implementation logic.
+[ ] Polished UX/UI: Frontend delivers a clean, modern agricultural dashboard responsive across mobile and desktop devices.
+22. FINAL INSTRUCTION TO CODING AGENT
+"Act as the Lead Full-Stack Architect and execute the full build of the AI-Powered Agriculture Crop Advisory Assistant specified above. Read all phases, database DDL, API route specifications, Zod schemas, and Gemini SDK implementations carefully. Generate the complete source code for every file outlined in the project structure without truncating code blocks or skipping logic. Begin implementation immediately."
